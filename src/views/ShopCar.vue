@@ -28,20 +28,24 @@
                 <li style="width: 300px;">{{item.course.courseTitle}}</li>
                 <li style="width: 150px; text-align: center">
                     <span class="oldprice">￥{{item.course.coursePrice}}</span>
-                    <span class="newprice">￥99.9</span>
+                    <span class="newprice">￥{{item.course.discountPrice}}</span>
                 </li>
                 <li style="width: 280px; text-align: center">
                     <span class="xianshi">限时钜惠</span>
                 </li>
-                <li style="margin-left: 20px">
-                    <i class="el-icon-delete"></i>
+                <li style="margin-left: 20px" @click="deleteoption(item.shoppingCartId)">
+                    <i class="el-icon-delete" ></i>
                 </li>
             </ul>
 
         </div>
         <div class="inall">
-            {{a1}}
+            <div class="inall-price">
+            <span>合计</span> <span style="color: red;margin-right: 20px">￥{{a1}}</span>
+                <button class="submit" :class="a1>0?'active':''">提交</button>
+            </div>
         </div>
+        <div style="clear: both"></div>
 
     </div>
 </template>
@@ -49,14 +53,14 @@
 <script>
     const cityOptions = [1];
     // import {mapState} from "vuex";
-    import {watchshopcar} from "../api/curros-api";
+    import {exitLogin, watchshopcar} from "../api/curros-api";
 
     export default {
         name: "shop",
         data() {
             return {
                 list: [],
-                check: false,
+
                 // checkAll: false,
                 checkedCities: ['上海', '北京'],
                 cities: cityOptions,
@@ -79,7 +83,7 @@
                 let a1 = 0;
                 this.list.forEach(item => {
                     if (item.checked)
-                        a1 += item.course.coursePrice
+                        a1 += item.course.discountPrice
                 })
                 return a1;
             },
@@ -94,9 +98,7 @@
             },
         },
         methods: {
-            check1() {
-                this.check = true
-            },
+
             handleCheckAllChange(val) {
                 // eslint-disable-next-line
                 // debugger
@@ -116,7 +118,24 @@
                 let checkedCount = value.length;
                 this.checkAll = checkedCount === this.cities.length;
                 this.isIndeterminate = checkedCount > 0 && checkedCount < this.cities.length;
-            }
+            },
+            deleteoption(a){
+                exitLogin(a).then(res=>{
+                    console.log(res)
+                    watchshopcar().then(res => {
+                        console.log(res)
+                        this.list = res.shoppingCartList.map(item => {
+                            return {
+                                ...item,
+                                // 为数组的每一项添加选中的属性
+                                checked: false
+                            }
+                        })
+
+                    })
+                })
+            },
+
 
         },
         created() {
@@ -243,11 +262,31 @@
         border-right: 0;
         height: 60px;
         margin: 20px 0;
+        width: 100%;
+
     }
 
     .title {
         margin-bottom: 20px;
     }
+    .inall-price {
+        float: right;
+        line-height: 60px;
+    }
 
-
+.submit {
+    float: right;
+    background: #999;
+    font-size: 20px;
+    text-align: center;
+    line-height: 60px;
+    width: 120px;
+    color: #fff;
+    margin-top: -1px;
+    outline-style: none;
+    border: 0;
+}
+    .active {
+        background: #ff8000;
+    }
 </style>

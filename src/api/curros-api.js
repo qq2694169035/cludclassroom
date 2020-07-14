@@ -83,6 +83,24 @@ return request.get(`/weChat/applet/shoppingCart/join/shoppingCart/${courseId}`)
 }
 
 //查看购物车
-export function watchshopcar(courseId) {
+export function watchshopcar() {
     return request.get(`/weChat/applet/shoppingCart/my/list`)
+}
+//查询登录状态
+export function userInformation() {
+    return request.get("/pcUser/login-user/info")
+}
+
+//删除
+export function exitLogin(shoppingCartId) {
+    return request.get(`/weChat/applet/shoppingCart/remove/${shoppingCartId}`)
+}
+
+export function switchChapters(sectionId){
+    const url =`/weChat/applet/course/switch/section/${sectionId}`;
+    return request.get(url).then(res=>{
+        return {
+            ...res,
+        }
+    })
 }

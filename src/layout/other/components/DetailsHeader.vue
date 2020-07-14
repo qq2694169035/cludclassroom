@@ -1,6 +1,6 @@
 <template>
     <div class="header-conpainer">
-        <img src="../../../assets/logo1.png" alt="">
+        <img src="../../../assets/logo1.png" alt="" class="logn">
 
 
         <div class="box">
@@ -21,10 +21,11 @@
 
 
         <div class="header-shop">
-          <router-link to="/shop">  <i class="el-icon-shopping-cart-1" style="font-size: 20px;margin-right: 15px; color: #ccc"></i></router-link>
+          <router-link to="/shop">  <i class="el-icon-shopping-cart-1" style="font-size: 20px;margin-right: 15px; color: #ccc" @click="shop"></i></router-link>
             <span @click="isLogin" v-if="!isLogin1">登录/注册</span>
             <span @click="isLogin" v-else>{{userInfor.nickname}}</span>
-            <i class="el-icon-user" style="text-align: center"></i>
+            <i class="el-icon-user" style="text-align: center" v-if="isLogin1==false"></i>
+            <img :src="userInfor.avatarUrl"  v-if="isLogin1==true" class="pic" style="width: 20px;">
         </div>
         <div style="clear: both"></div>
         <Login></Login>
@@ -33,6 +34,7 @@
 
 <script>
     import Login from "../../../components/Login";
+    import login from '../../../mixin/login'
     import {mapState} from "vuex";
 
     export default {
@@ -40,6 +42,7 @@
         components: {
             Login
         },
+        mixins:[login],
         data() {
             return {
                 activeIndex: '1',
@@ -53,6 +56,11 @@
             isLogin() {
                 this.$store.commit('changedialogVisible', {isShow: true})
             },
+            shop(){
+                if(this.loginClick()){
+                    console.log(123)
+                }
+            }
 
 
         },
@@ -77,7 +85,9 @@
         height: 106px;
         /*border: 1px solid red;*/
 
-        img {
+
+
+        .logn {
             float: left;
             margin-top: 22px;
             height: 55px;

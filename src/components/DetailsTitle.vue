@@ -63,16 +63,23 @@
         methods:{
             play(){
                 // console.log(123)
-                this.$router.push('/play')
+                this.$router.push('/play/'+this.list.courseId)
             },
             collect(){
                 if (this.loginClick()){
-                    console.log('可以收藏')
+                    this.$message({
+                        message: '收藏成功',
+                        type: 'success'
+                    });
                 }
             },
             add(){
                 shopCar(this.list.courseId).then(res=>{
                     console.log(res)
+                    this.$message({
+                        message: '加入购物车成功',
+                        type: 'success'
+                    });
 
                 })
 

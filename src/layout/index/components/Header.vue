@@ -1,15 +1,15 @@
 <template>
     <div class="header-conpainer">
-        <img src="../../../assets/logo1.png" alt="">
+        <img src="../../../assets/logo1.png" alt="" class="logn">
         <input type="text" placeholder="搜索内容">
         <el-button type="primary" icon="el-icon-search" class="button">搜索</el-button>
         <div class="header-shop">
-            <i class="el-icon-shopping-cart-1" style="font-size: 20px;margin-right: 15px; color: #ccc"></i>
+          <router-link to="/shop">  <i class="el-icon-shopping-cart-1" style="font-size: 20px;margin-right: 15px; color: #ccc" @click="shopCar"></i></router-link>
 
             <span @click="isLogin" v-if="!isLogin1">登录/注册</span>
             <span @click="layout" v-if="isLogin1">{{userInfor.nickname}}</span>
             <i class="el-icon-user" style="text-align: center" v-if="isLogin1==false"></i>
-<!--            <img :src="userInfor.avatarUrl"  v-if="isLogin1==true" class="pic" style="width: 20px;">-->
+            <img :src="userInfor.avatarUrl"  v-if="isLogin1==true" class="pic" style="width: 20px;">
         </div>
         <div style="clear: both"></div>
         <Login></Login>
@@ -20,12 +20,13 @@
     import Login from "../../../components/Login";
     import {mapState} from "vuex";
     import {getuserInfor} from "../../../api/curros-api";
-
+    import login from '../../../mixin/login'
     export default {
         name: "Header",
         components:{
             Login
         },
+        mixins:[login],
         created() {
             console.log(this.rules2)
         },
@@ -40,6 +41,11 @@
                     }
 
                 })
+            },
+            shopCar(){
+                if (this.loginClick()){
+                    console.log('可以跳转')
+                }
             }
         },
         computed:{
@@ -62,7 +68,7 @@
         height: 106px;
         /*border: 1px solid red;*/
 
-        img {
+        .logn {
             float: left;
             margin-top: 22px;
             height: 55px;
